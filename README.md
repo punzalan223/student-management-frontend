@@ -2,11 +2,8 @@
 
 A comprehensive web application for managing student services, requests, and administrative tasks in an educational institution.
 
-**Version:** 1.1 – 2025.11.24  
 **Backend:** Laravel 12  
 **Frontend:** Vue 3 + TypeScript + Vite  
-**Database:** MySQL
-
 ---
 
 ## 📋 Table of Contents
@@ -15,13 +12,7 @@ A comprehensive web application for managing student services, requests, and adm
 - [Tech Stack](#tech-stack)
 - [System Requirements](#system-requirements)
 - [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [API Documentation](#api-documentation)
 - [Testing Accounts](#testing-accounts)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [License](#license)
 
 ---
 
@@ -126,3 +117,37 @@ Follow these steps to get the project running on your local machine:
 ### 1. Clone the Repository
 ### 2. Run npm Install
 ### 3. run "npm run dev" in console
+
+## Testing Account
+
+| Role    | Email                                             | Password |
+| ------- | ------------------------------------------------- | -------- |
+| Admin   | [admin@example.com](mailto:admin@example.com)     | password |
+| Staff   | [staff@example.com](mailto:staff@example.com)     | password |
+| Student | [student@example.com](mailto:student@example.com) | password |
+
+## Axios Configuration
+
+The frontend uses **Axios** to communicate with the backend API. The configuration is in `src/utils/axios.ts`:
+
+```ts
+import axios from 'axios';
+import { useAuthStore } from '@/stores/auth';
+
+const api = axios.create({
+  baseURL: 'http://service-management-backend.test/api' // Change this to your local backend URL
+});
+
+api.interceptors.request.use((config) => {
+  const auth = useAuthStore();
+
+  if (auth.token) {
+    config.headers.Authorization = `Bearer ${auth.token}`;
+  }
+
+  return config;
+});
+
+export default api;
+
+## ⚠️ Make sure to update the baseURL to match your local backend, for example: http://localhost:8000/api
